@@ -47,3 +47,9 @@ LOAD DATA LOCAL INPATH 'data1.csv' INTO TABLE tbl1;
     >>> Escriba su respuesta a partir de este punto <<<
 */
 
+DROP TABLE IF EXISTS contador;
+CREATE TABLE contador AS SELECT c2, value FROM tbl0 LATERAL VIEW explode(map_values(c6)) tbl0 as value;
+INSERT OVERWRITE LOCAL DIRECTORY './output'
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+COLLECTION ITEMS TERMINATED BY ':'
+SELECT c2, sum(value) FROM contador GROUP BY c2;
