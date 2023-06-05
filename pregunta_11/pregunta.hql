@@ -28,4 +28,8 @@ LOAD DATA LOCAL INPATH 'data.tsv' INTO TABLE t0;
 /*
     >>> Escriba su respuesta a partir de este punto <<<
 */
-
+DROP TABLE IF EXISTS contador;
+CREATE TABLE contador AS SELECT c1, size(c2), size(c3) FROM t0;
+INSERT OVERWRITE LOCAL DIRECTORY './output'
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+SELECT * FROM contador;
