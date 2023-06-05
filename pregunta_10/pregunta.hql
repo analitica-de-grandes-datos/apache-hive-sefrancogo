@@ -29,4 +29,9 @@ LOAD DATA LOCAL INPATH 'data.tsv' INTO TABLE t0;
 /*
     >>> Escriba su respuesta a partir de este punto <<<
 */
+DROP TABLE IF EXISTS contador;
+CREATE TABLE contador AS SELECT key, value FROM t0 LATERAL VIEW OUTER explode(c3) letter;
 
+INSERT OVERWRITE LOCAL DIRECTORY './output'
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+SELECT key, count(1) FROM contador GROUP BY key;
